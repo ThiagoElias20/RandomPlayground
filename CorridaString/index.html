@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .parent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding-top: 40px;
+        }
+        .conteinerLeft {
+            width: 50vw;
+            display: flex;
+            flex-direction: column;
+        }
+        .conteinerRight {
+            width: 50vw;
+            display: flex;
+            flex-direction: column;
+            text-align: end;
+        }
+        .buttons {
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="buttons">
+        <button onclick="butClicado()">CLIQUE AQUI</button>
+        <button onclick="pause()">PAUSE</button>
+    </div>
+    <div class="parent">
+        <div class="conteinerLeft">a</div>
+        <div class="conteinerRight">b</div>
+    </div>
+
+    <script>
+        var conteinerLeft = document.querySelector('.conteinerLeft');
+        var conteinerRight = document.querySelector('.conteinerRight');
+        var presentText = 'a';
+        var RightpresentText = 'b';
+        var subtract = false;
+        var intervaloA = null;
+        var intervaloB = null;
+        function butClicado() {
+            intervaloA = setInterval(() => {manipularTexto('a', 71)}, 10);
+            intervaloB = setInterval(() => {manipularTexto('b', 71)}, 10);
+        }
+
+        function pause() {
+            clearInterval(intervaloA);
+            clearInterval(intervaloB);
+        }
+
+        function manipularTexto(character, maxnumb) {
+            if (character === 'a') {
+                let p = document.createElement("p");
+                p.innerText = presentText;
+                if (presentText.length >= maxnumb) {
+                    subtract = true; // quando chegar em 20, vai começar a diminuir
+                } else if (presentText.length <= 2) {
+                    subtract = false;
+                }
+                if (subtract === false) {
+                    presentText += character
+                } else if (subtract === true) {
+                    presentText = presentText.slice(0, -1); // Tirando ultimo caractere de presentText
+                }
+                conteinerLeft.appendChild(p); // no fim sempre vai criar o novo p
+                window.scrollTo(0, document.body.scrollHeight); // mantem o scroll sempre acompanhando o texto
+            } else {
+                let p = document.createElement("p");
+                p.innerText = RightpresentText;
+                if (RightpresentText.length >= maxnumb) {
+                    subtract = true; // quando chegar em 20, vai começar a diminuir
+                } else if (RightpresentText.length <= 2) {
+                    subtract = false;
+                }
+                if (subtract === false) {
+                    RightpresentText += character
+                } else if (subtract === true) {
+                    RightpresentText = RightpresentText.slice(0, -1); // Tirando ultimo caractere de presentText
+                }
+                conteinerRight.appendChild(p); // no fim sempre vai criar o novo p
+                window.scrollTo(0, document.body.scrollHeight); // mantem o scroll sempre acompanhando o texto
+            }
+        }
+    </script>
+</body>
+</html>

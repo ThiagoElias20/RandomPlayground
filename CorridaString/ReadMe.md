@@ -1,0 +1,1 @@
+Simples teste usando SetInterval em JS, fazendo uma corrida entre aaaaaaa e bbbbbb.
