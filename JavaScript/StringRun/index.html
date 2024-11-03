@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>StringRun</title>
     <style>
         .parent {
             width: 100%;
@@ -28,10 +28,8 @@
     </style>
 </head>
 <body>
-    
-
     <div class="buttons">
-        <button onclick="butClicado()">CLIQUE AQUI</button>
+        <button onclick="butClicado()">CLICK HERE</button>
         <button onclick="pause()">PAUSE</button>
     </div>
     <div class="parent">
@@ -62,32 +60,32 @@
                 let p = document.createElement("p");
                 p.innerText = presentText;
                 if (presentText.length >= maxnumb) {
-                    subtract = true; // quando chegar em 20, vai começar a diminuir
+                    subtract = true; // when in 20, starts to subtract characters from string
                 } else if (presentText.length <= 2) {
                     subtract = false;
                 }
                 if (subtract === false) {
                     presentText += character
                 } else if (subtract === true) {
-                    presentText = presentText.slice(0, -1); // Tirando ultimo caractere de presentText
+                    presentText = presentText.slice(0, -1); // Remove last char of presentText
                 }
-                conteinerLeft.appendChild(p); // no fim sempre vai criar o novo p
-                window.scrollTo(0, document.body.scrollHeight); // mantem o scroll sempre acompanhando o texto
+                conteinerLeft.appendChild(p); // in the end it always create new paragraph
+                window.scrollTo(0, document.body.scrollHeight); // maintain scroll on end of page
             } else {
                 let p = document.createElement("p");
                 p.innerText = RightpresentText;
                 if (RightpresentText.length >= maxnumb) {
-                    subtract = true; // quando chegar em 20, vai começar a diminuir
+                    subtract = true; // when in 20, starts to subtract characters from string
                 } else if (RightpresentText.length <= 2) {
                     subtract = false;
                 }
                 if (subtract === false) {
                     RightpresentText += character
                 } else if (subtract === true) {
-                    RightpresentText = RightpresentText.slice(0, -1); // Tirando ultimo caractere de presentText
+                    RightpresentText = RightpresentText.slice(0, -1); // Remove last char of presentText
                 }
-                conteinerRight.appendChild(p); // no fim sempre vai criar o novo p
-                window.scrollTo(0, document.body.scrollHeight); // mantem o scroll sempre acompanhando o texto
+                conteinerRight.appendChild(p); // in the end it always create new paragraph
+                window.scrollTo(0, document.body.scrollHeight); // maintain scroll on end of page
             }
         }
     </script>
