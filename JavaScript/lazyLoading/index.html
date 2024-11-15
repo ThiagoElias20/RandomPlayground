@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy Loading</title>
+    
+    <style>
+        .img {
+            height: 300px;
+            width: 300px;
+            object-fit: cover;
+        }
+        .height2 {
+            height: 600px;
+        }
+        .height3 {
+            height: 450px;
+        }
+        #skeleton {
+            animation: skeleton-loading 1.5s linear infinite alternate;
+        }
+        @keyframes skeleton-loading {
+            0% {
+                background-color: hsl(0, 0%, 85%);
+            }
+            100% {
+                background-color: hsl(0, 0%, 75%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img class="img1 img" alt="" loading="lazy">
+    <img class="img2 img" alt="" loading="lazy">
+    <img class="img3 img" alt="" loading="lazy">
+    <img class="img4 img" alt="" loading="lazy">
+    <img class="img5 img" alt="" loading="lazy">
+    
+    <script>
+        window.onload = () => {
+            for (var i = 1; i <= 5; i++) {
+                getImage(i);
+            }
+        }
+
+        const API_URL = "" // put your API URL here
+
+        async function getImage(params) {
+            const Img = document.querySelector('.img' + params);
+            var randHeight = Math.floor(Math.random() * 481) + 300 // random height between 300 and 480
+            Img.setAttribute('id','skeleton');
+            Img.style.height = randHeight + "px";
+            try {
+                const response = await fetch(`https://api.api-ninjas.com/v1/randomimage?height=${randHeight}&category=`, {
+                    headers: {
+                        'X-Api-Key': API_URL,
+                        'Accept': 'image/jpg'
+                    }
+                });
+
+                const blob = await response.blob();
+
+                const imageURL = URL.createObjectURL(blob);
+                Img.src = imageURL;
+                Img.removeAttribute('id', 'skeleton');
+
+
+            } catch(err) {
+                console.error(err);
+            }
+            
+        }
+    </script>
+</body>
+</html>
