@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face API Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Face API Test</h1>
+    
+    <!-- Seção para cadastrar pessoas -->
+    <div class="section">
+        <h2>Cadastrar Pessoa</h2>
+        <input type="text" id="personName" placeholder="Nome da pessoa">
+        <input type="url" id="imageUrl" placeholder="URL da imagem">
+        <button onclick="registerPerson()">Cadastrar</button>
+    </div>
+
+    <!-- Seção para buscar pessoa -->
+    <div class="section">
+        <h2>Buscar Pessoa</h2>
+        <input type="url" id="searchImageUrl" placeholder="URL da imagem para buscar">
+        <button onclick="searchPerson()">Buscar</button>
+        <div id="result"></div>
+    </div>
+
+    <!-- Canvas para exibir imagens -->
+    <canvas id="imageCanvas" width="300" height="300"></canvas>
+    
+    <!-- Lista de pessoas cadastradas -->
+    <div class="section">
+        <h2>Pessoas Cadastradas</h2>
+        <div id="registeredPeople"></div>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api"></script>
+    <script defer src="src/script.js"></script>
+</body>
+</html>
