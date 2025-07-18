@@ -8,7 +8,12 @@ package main
 
 import (
 	// "fmt"
+	"encoding/json"
+	"fmt"
+	"os"
 	"pizzaria/models"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +23,14 @@ import (
 // 	Nome string `json:"nome"`
 // 	Preco float64 `json:"preco"`
 // }
+
+// var pizzas = []models.Pizza{
+// 	{ID: 1, Nome: "Calabresa", Preco: 32.0},
+// 	{ID: 2, Nome: "Marguerita", Preco: 35.5},
+// 	{ID: 3, Nome: "Bacon", Preco: 37.0},
+// } // list
+
+var pizzas []models.Pizza
 
 func main() {
 	// var nomePizzaria string = "Pizzaria Bisi"; // first variable
@@ -32,18 +45,72 @@ func main() {
 	// 	{ID: 3, nome: "Bacon", preco: 37.0},
 	// } // list
 
+	loadPizzas() // will fetch pizzas on json
+
 	router := gin.Default();
-	router.GET("/pizzas", getPizzas);
+	router.GET("/pizzas/:id", index);
+	router.GET("/pizzas", fetchPizzas);
+	router.POST("/pizzas", create);
 	router.Run()
 }
 
-func getPizzas(c*gin.Context) {
-	var pizzas = []models.Pizza{
-		{ID: 1, Nome: "Calabresa", Preco: 32.0},
-		{ID: 2, Nome: "Marguerita", Preco: 35.5},
-		{ID: 3, Nome: "Bacon", Preco: 37.0},
-	} // list
+func fetchPizzas(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"pizzas": pizzas,
 	})
+}
+func create(c *gin.Context) {
+	var pizza models.Pizza
+	if err := c.ShouldBindJSON(&pizza); err !=nil {
+		c.JSON(400, gin.H{
+			"error": err.Error()})
+		return // returned error and stopped function
+	}
+	pizza.ID = len(pizzas) + 1
+	pizzas = append(pizzas, pizza);
+	savePizza()
+	c.JSON(201, pizza);
+}
+func index(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam) //transforms string in integer
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error()})
+			return
+	}
+	for _, p := range pizzas {
+		if p.ID == id {
+			c.JSON(200, p)
+			return
+		}
+	}
+	c.JSON(404, gin.H{"message": "Pizza not found"})
+}
+
+func loadPizzas() {
+	file, err := os.Open("data/pizzas.json")
+	if err != nil {
+		fmt.Println("Error on file json:", err)
+		return
+	}
+	defer file.Close() // last instrunction before function ending
+	decoder := json.NewDecoder(file);
+	if err := decoder.Decode(&pizzas); err != nil {
+		fmt.Println("Error decoding JSON:", err);
+	} // & is for the memory addres of pizzas
+}
+
+func savePizza() {
+	file, err := os.Create("data/pizzas.json")
+	if err != nil {
+		fmt.Println("Error on file json:", err)
+		return
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	if err := encoder.Encode(pizzas); err != nil {
+		fmt.Println("Error encoding JSON:", err);
+	}
 }
